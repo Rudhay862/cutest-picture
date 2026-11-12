@@ -1,14 +1,10 @@
-# Make the cutest picture: this program copies the image shipped in this
-# repository to the output directory as entry.png.
-# The shipped file is named entry.png and holds JPEG bytes, which the
-# rules allow: the format is told apart by the file's first bytes.
-# Deterministic: the output bytes are exactly the shipped image bytes,
-# so two runs write identical files.
-import os
-import shutil
+"""Cutest-picture entry: copy the bundled picture to the output folder."""
 from pathlib import Path
+import os
 
-HERE = Path(__file__).resolve().parent
-OUT = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
-OUT.mkdir(parents=True, exist_ok=True)
-shutil.copyfile(HERE / "entry.png", OUT / "entry.png")
+here = Path(__file__).resolve().parent
+out = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
+out.mkdir(parents=True, exist_ok=True)
+(out / "entry.png").write_bytes((here / "entry.png").read_bytes())
+
+# A plain copy: every run produces the same bytes.
